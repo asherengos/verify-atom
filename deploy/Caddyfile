@@ -1,0 +1,48 @@
+# verify-service Caddyfile -- $0 go-live bundle.
+#
+# 1. Replace verify.example.com with your real domain (or a free DuckDNS
+#    subdomain for day one -- see deploy/DEPLOY.md). Caddy fetches a public
+#    TLS certificate automatically; ports 80 and 443 must be reachable.
+# 2. Validate before reloading:  caddy validate --config /etc/caddy/Caddyfile
+# 3. The app listens on 127.0.0.1:5057 only -- it is never exposed directly.
+
+verify.example.com {
+	# Crawler hygiene: serve robots.txt, sitemap.xml, and the landing page
+	# as static files so search and AI crawlers can find the
+	# machine-readable docs. The files live in /var/www/verify-static
+	# (installed by install.sh).
+	handle /robots.txt {
+		root * /var/www/verify-static
+		file_server
+	}
+	handle /sitemap.xml {
+		root * /var/www/verify-static
+		file_server
+	}
+	handle / {
+		root * /var/www/verify-static
+		file_server
+	}
+	reverse_proxy 127.0.0.1:5057 {
+		# Pass the real client IP through so the app's per-IP rate limiter
+		# sees callers, not the proxy. The app (app.py) trusts
+		# X-Forwarded-For ONLY when the immediate peer is 127.0.0.1/::1,
+		# i.e. this proxy -- direct clients cannot spoof it.
+		header_up X-Forwarded-For {http.request.remote.host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	# Security headers for everything the proxy serves.
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "no-referrer"
+		-Server
+	}
+
+	# Abuse note: the in-app per-IP limiter (30 req/min on POST /verify,
+	# 429 + Retry-After) is the $0 default and is enough for v1. If abuse
+	# persists, add edge rate limiting here (e.g. the caddy-ratelimit
+	# module) -- but that is not needed to go live.
+}

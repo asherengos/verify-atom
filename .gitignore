@@ -1,0 +1,12 @@
+# Runtime state: ledger, keys, and any local data. Never committed.
+data/
+
+# Virtualenv and bytecode.
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Belt and suspenders: no key material in the repo, ever.
+*.key
+*.pem

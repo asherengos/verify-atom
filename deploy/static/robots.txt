@@ -1,0 +1,25 @@
+# robots.txt -- verification service ("the atom")
+#
+# Crawlers are welcome on the descriptive, machine-readable paths.
+# POST /verify is intentionally left undisallowed: it is a public API,
+# rate-limited per IP (30 req/min, 429 + Retry-After).
+
+User-agent: *
+Allow: /llms.txt
+Allow: /key
+Allow: /board/feed
+Allow: /health
+Allow: /robots.txt
+Allow: /sitemap.xml
+
+# AI crawlers: explicitly welcome. The machine-readable API doc is /llms.txt.
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+Sitemap: https://asheraistudios.duckdns.org/sitemap.xml

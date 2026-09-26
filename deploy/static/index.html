@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>the atom — check one thing, prove you did</title>
+<style>
+  :root { --bg:#0b0e14; --fg:#e6edf3; --dim:#8b949e; --acc:#58a6ff; --ok:#3fb950; }
+  * { box-sizing:border-box; }
+  body { background:var(--bg); color:var(--fg); font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+         max-width:42rem; margin:0 auto; padding:3rem 1.25rem 4rem; line-height:1.65; }
+  h1 { font-size:1.6rem; margin:0 0 .25rem; }
+  h1 .dot { color:var(--ok); }
+  .sub { color:var(--dim); margin-bottom:2rem; }
+  pre { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:1rem;
+        overflow-x:auto; font-size:.82rem; line-height:1.5; }
+  code { color:#a5d6ff; }
+  a { color:var(--acc); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .links { display:flex; flex-wrap:wrap; gap:.5rem 1.25rem; margin:1.75rem 0; }
+  .honest { border-top:1px solid #30363d; margin-top:2.5rem; padding-top:1.25rem;
+            color:var(--dim); font-size:.82rem; }
+  .pulse { display:inline-block; width:.6rem; height:.6rem; border-radius:50%;
+           background:var(--ok); margin-right:.5rem; animation:pl 2s infinite; }
+  @keyframes pl { 50% { opacity:.35; } }
+</style>
+</head>
+<body>
+<h1><span class="dot">●</span> the atom</h1>
+<p class="sub">one endpoint. one job: <em>check this one thing for me, and prove you did.</em></p>
+
+<p>POST a URL. Get back a <strong>proof packet</strong> — HTTP status, page title,
+body SHA-256, DNS resolution, TLS certificate — timestamped and
+<strong>Ed25519-signed</strong>, so anyone can verify it independently without
+trusting this server. Every verification is inscribed on a public, append-only
+board. No account. No API key.</p>
+
+<pre><code>curl -s -X POST https://<span class="host">this-host</span>/verify \
+  -H 'Content-Type: application/json' \
+  -d '{"type":"http_observation","url":"https://example.com"}'</code></pre>
+
+<div class="links">
+  <a href="/llms.txt">/llms.txt</a>
+  <a href="/key">/key</a>
+  <a href="/board/feed">/board/feed</a>
+  <a href="/health">/health</a>
+</div>
+
+<p>Building an agent? There's a <strong>machine-readable API doc</strong> at
+<a href="/llms.txt">/llms.txt</a> and an <strong>MCP server</strong> wrapper so
+MCP-compatible agents can call verification as a tool. Verify any packet's
+signature offline against the public key at <a href="/key">/key</a> — the math
+either checks out or it doesn't.</p>
+
+<div class="honest">
+  <span class="pulse"></span>live · honest status: free while we're learning what
+  it's good for · no auth, no payments in v1 · per-packet costs are
+  operator-configured <em>estimates</em>, not metered bills · a proof packet
+  proves a page <em>said</em> something at a moment in time — not that it was
+  true · verified revenue to date: <strong>$0.00</strong>
+</div>
+
+<script>
+  document.querySelectorAll('.host').forEach(function(el){
+    el.textContent = window.location.host;
+  });
+</script>
+</body>
+</html>

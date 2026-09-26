@@ -1,0 +1,42 @@
+# verify-service systemd unit -- $0 go-live bundle.
+#
+# Install (on the production VM, as root):
+#   cp deploy/verify-service.service /etc/systemd/system/verify-service.service
+#   systemctl daemon-reload
+#   systemctl enable --now verify-service
+#   systemctl status verify-service        # should be active (running)
+#   journalctl -u verify-service -f        # logs
+#
+# The service listens on 127.0.0.1:5057 only; public traffic arrives via
+# the Caddy reverse proxy (deploy/Caddyfile), which terminates TLS.
+
+[Unit]
+Description=Verification service (the atom) -- signed proof packets
+Documentation=file:///opt/verify-service/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=verify
+Group=verify
+WorkingDirectory=/opt/verify-service
+# Optional env file for future secrets (e.g. payment provider credentials).
+# The leading dash means systemd will NOT fail if the file is absent.
+# v1 needs nothing in it -- payments are disabled by design.
+EnvironmentFile=-/etc/verify-service/secrets.env
+ExecStart=/opt/verify-service/.venv/bin/python /opt/verify-service/app.py
+Restart=on-failure
+RestartSec=5
+# Single worker owns the ledger: NEVER run two instances on one data dir.
+
+# --- hardening ---
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+# The data dir (ledger + keys) is the only writable path the app needs.
+ReadWritePaths=/opt/verify-service/data
+
+[Install]
+WantedBy=multi-user.target

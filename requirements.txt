@@ -1,0 +1,4 @@
+# Production dependencies: intentionally minimal (flask + waitress only).
+# Test/dev: pytest (install separately; not needed to run the service).
+flask
+waitress

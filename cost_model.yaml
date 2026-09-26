@@ -1,0 +1,29 @@
+# =============================================================================
+# COST MODEL -- OPERATOR-CONFIGURED ESTIMATES
+# =============================================================================
+# These numbers are NOT metered cloud bills. They are placeholder estimates
+# the operator sets so that every proof packet can show an honest,
+# transparent cost_usd next to its price quote. Every packet carries
+# "cost_basis": "estimate" for exactly this reason.
+#
+# BEFORE ANY REAL PRICING OR GO-LIVE: replace these with metered values
+# from your actual hosting/bandwidth bills, then re-run a calibration
+# batch and confirm margin_usd stays positive. The honest loop
+# (ledger.py) exists to catch the moment it doesn't.
+# =============================================================================
+
+rates:
+  # Assumed blended compute cost, USD per wall-clock second of a worker.
+  # Placeholder only: ~$0.0072/hour is illustrative, not a quote.
+  per_second_compute_usd: 0.000002
+
+  # Marginal cost attributed to each outbound HTTP request the service
+  # performs (connection setup, TLS handshake, logging).
+  per_http_request_usd: 0.000010
+
+  # Marginal cost per megabyte transferred in (request + response bytes).
+  per_mb_egress_usd: 0.000050
+
+notes:
+  honesty: "All rates are operator estimates, not vendor quotes."
+  calibration: "Recalibrate from real bills before go-live; see README go-live checklist."

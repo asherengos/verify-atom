@@ -1,0 +1,43 @@
+# Verification service configuration.
+# Parsed by mini_yaml.py (strict subset: mappings, scalars, # comments).
+
+service:
+  version: "0.1.0"
+  port: 5057
+  # Resolved relative to the service root unless absolute.
+  data_dir: "data"
+
+verify:
+  # Quoted price per verification, USD. The prototype charged a simulated
+  # $0.005; this backend quotes the same number as a REAL quote -- but no
+  # payment is collected while payments.enabled is false (see below).
+  base_price_usd: 0.005
+  # Network guardrails for outbound observations.
+  timeout_s: 10
+  max_body_bytes: 2097152
+  max_url_length: 2048
+  # Abuse guard: max POST /verify per client IP per sliding 60-second
+  # window. Over the cap -> 429 with a Retry-After header. The app trusts
+  # X-Forwarded-For only from the local reverse proxy (see deploy/).
+  # Set to 0 to disable (never disable on a public endpoint).
+  rate_limit_per_minute: 30
+  # NEVER enable in production: allows http_observation of private /
+  # loopback / link-local addresses. Exists only so the hermetic test
+  # suite can run a stub server on 127.0.0.1.
+  allow_private: false
+
+# Path to the cost model, relative to the service root unless absolute.
+cost_model: "cost_model.yaml"
+
+payments:
+  enabled: false
+  # ---------------------------------------------------------------------------
+  # INTEGRATION POINT (not built in v1).
+  # To accept real money later, add a `provider:` section here describing a
+  # real payment provider AND implement the charge flow. STARTUP GUARD:
+  # if enabled is true without a configured provider, the service REFUSES
+  # TO START (fail closed). There is deliberately no provider code in v1.
+  # ---------------------------------------------------------------------------
+  # provider:
+  #   name: "stripe"              # example only -- not implemented
+  #   credentials_configured: true
