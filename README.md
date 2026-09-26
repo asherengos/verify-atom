@@ -16,6 +16,14 @@ verification is appended to a public, permanent ledger — the board.
   is charged, because nothing can be charged yet.
 
 ## Architecture
+## MCP server (`mcp/`)
+
+This repo also ships a [Model Context Protocol](https://modelcontextprotocol.io) server that exposes the verification atom as an MCP tool, so MCP-compatible agents can request signed proof packets directly.
+
+- **Install:** `uvx verify-atom-mcp` (published on PyPI as `verify-atom-mcp`)
+- **Listed in the official MCP registry** as `io.github.asherengos/verify-atom`
+- **Transport:** stdio · **Tool:** `verify` — performs an HTTP observation of a URL and returns the Ed25519-signed proof packet
+- Source: `mcp/mcp_server.py` (zero dependencies; `mcp/README.md` has the details)
 
 | File | Role |
 |---|---|
