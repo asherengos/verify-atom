@@ -21,7 +21,7 @@ import urllib.request
 BASE_URL = os.environ.get("VRF_BASE_URL", "https://asheraistudios.duckdns.org").rstrip("/")
 PROTOCOL_VERSION = "2024-11-05"
 SERVER_NAME = "verify-atom"
-SERVER_VERSION = "0.1.0"
+SERVER_VERSION = "0.2.0"
 
 
 def rpc_request(url: str, payload: dict, timeout: int = 60) -> dict:

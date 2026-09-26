@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "verify-atom-mcp"
-version = "0.1.0"
+version = "0.2.0"
 description = "MCP server giving AI agents cryptographically signed proof of web observations (Ed25519-signed proof packets)"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -27,7 +27,8 @@ Repository = "https://github.com/asherengos/verify-atom"
 
 [project.scripts]
 verify-atom-mcp = "mcp_server:main"
+verify-atom-mcp-http = "mcp_http_server:main"
 
 [tool.setuptools]
-py-modules = ["mcp_server"]
+py-modules = ["mcp_server", "mcp_http_server"]
 license-files = ["LICENSE"]
