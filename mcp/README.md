@@ -1,3 +1,4 @@
+<!-- mcp-name: io.github.asherengos/verify-atom -->
 # verify_url — MCP server for the verification endpoint ("the atom")
 
 Gives any MCP-compatible agent a `verify_url` tool: POST a URL, get back a
@@ -9,9 +10,21 @@ proof packet whose signature anyone can verify independently.
 
 ## Run it
 
+From a checkout (no install needed):
+
 ```bash
 VRF_BASE_URL=https://asheraistudios.duckdns.org python3 mcp_server.py
 ```
+
+Or install it as a package (console script `verify-atom-mcp`):
+
+```bash
+pip install ./mcp          # from the repo root
+VRF_BASE_URL=https://asheraistudios.duckdns.org verify-atom-mcp
+```
+
+(PyPI publication is pending — after that, `pip install verify-atom-mcp`
+or `uvx verify-atom-mcp` will work directly.)
 
 (`VRF_BASE_URL` defaults to the public deployment. stdio transport, zero
 third-party dependencies — the MCP handshake is plain JSON-RPC 2.0.)

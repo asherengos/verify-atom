@@ -118,7 +118,19 @@ Required artifacts:
 
 The service code lives in a public GitHub repository with a README that describes, in plain language, what a proof packet is and how to verify one.
 
-**Status:** Blocked on Founder (requires Founder's GitHub identity)
+**Status:** Complete — repo public at https://github.com/asherengos/verify-atom (2026-09-26)
+
+Pushed by the Founder: commit `28ecc80` on `main`, 27 tracked files, clean
+history. Publicly verified: visibility Public, README renders, all root
+files present. Local-only folders (`data/`, `.pytest_cache`,
+`__pycache__`) were removed from the working copy before push; the pushed
+tree matches the clean tracked set exactly.
+
+Git repo initialized in `~/workspace/verify-service`: single commit on `main`
+(27 files), `.gitignore` verified clean — no keys, no `data/`, no venv, no
+caches. Zipped (with `.git`) and uploaded to Muse storage; Founder downloads,
+creates the empty public repo on github.com, then `git remote add origin`
++ `git push -u origin main`. Suggested name: `verify-atom`.
 
 Assistant prepares:
 
@@ -136,7 +148,13 @@ Evidence required: public repo URL returning 200, README rendering, no secret ma
 
 Search and AI crawlers can reach the descriptive pages without obstruction.
 
-**Status:** Prepared in bundle; live deploy deferred
+**Status:** Complete (2026-09-26)
+
+Deployed live via paste-safe base64 one-liners. Public verification:
+`/` → 200 (landing page, correct title), `/robots.txt` → 200,
+`/sitemap.xml` → 200, `/llms.txt` → 200, `POST /verify` → 200 with a fresh
+CONFIRMED packet (`VRF-20260926-13b1d042`). Caddy validated clean
+("Valid configuration") before reload; the app behind the proxy is unaffected.
 
 The bundle carries everything (`deploy/Caddyfile` handle blocks,
 `deploy/static/robots.txt` + `sitemap.xml`, installer step). Live deployment
@@ -144,6 +162,14 @@ was deferred 2026-09-26 after paste instability in the terminal session made
 multi-line edits unreliable at 1 AM. This blocks nothing: with no robots.txt
 present, the default is allow-all, so no crawler is obstructed. The
 machine-readable doc that matters (`/llms.txt`, correct domain) is live.
+
+Update 2026-09-26 morning: a human **landing page** was added
+(`deploy/static/index.html` — domain-agnostic, fills host via JS) plus a
+`handle /` block in the Caddyfile so `/` serves it while everything else still
+proxies to the app. Verified against official Caddy docs: v2 path matching is
+exact, so `handle /` matches only the root. Paste-ready base64 one-liners for
+all four files (robots.txt, sitemap.xml, index.html, full Caddyfile) were
+prepared for the Founder's terminal session — backup, validate, reload, verify.
 
 Required artifacts (prepared by assistant):
 
@@ -164,7 +190,9 @@ Advance to MARKET-2 only when:
 | 3 | Public GitHub repo live | 25% | repo URL, clean history |
 | 4 | robots.txt + sitemap.xml live | 25% | public 200s |
 
-All four required. Partial credit is recorded but does not open the gate.
+All four required. **Gate G1: 100% COMPLETE (2026-09-26)** — /llms.txt live ✓,
+MCP end-to-end ✓, GitHub public ✓, robots.txt + sitemap.xml live ✓.
+MARKET-2 is now open.
 
 ---
 
@@ -193,7 +221,18 @@ It must contain the "does NOT prove" section. Honesty is the product.
 
 #### Milestone 2.2: Reddit
 
-**Status:** Blocked on Founder (their account, their voice)
+**Status:** First attempt failed 2026-09-26 — the r/vibecoding post
+(u/Thenightmancumeth, `1wqt2bn`) was removed by Reddit for content-policy
+violation and the account was banned from the community. Likely causes:
+the sub requires dev-tool posts to be pre-approved (rule 2: "Vibe coding
+dev tools must be approved"; rule 3: "No shilling"), and Reddit's automated
+filters are hostile to duckdns.org links (free dynamic-DNS domains are
+heavily abused by spammers, so they get filtered on sight). Lessons for
+the next attempts: get pre-approval where a sub requires it, lead with the
+GitHub repo link (trusted domain) instead of the duckdns URL — the live
+demo link already lives in the repo README — and follow each sub's showcase
+format. Do not evade the ban with alt accounts (that risks sitewide
+suspension). Next: r/SideProject in their format.
 
 Prepared by assistant:
 
@@ -206,7 +245,11 @@ Evidence: post URLs recorded.
 
 #### Milestone 2.3: Show HN
 
-**Status:** Blocked on Founder
+**Status:** Blocked on platform — Hacker News is temporarily restricting
+Show HN submissions (observed 2026-09-26 on news.ycombinator.com/showhn:
+"a massive influx, mostly by users who aren't yet familiar with the site or
+its culture"). This is platform-wide, not specific to us. Draft kept warm;
+retry after the restriction lifts.
 
 Prepared by assistant: `dist/hn-post.md` (title + first comment).
 
@@ -221,6 +264,29 @@ Targets: RapidAPI, Postman Public API Network.
 Prepared by assistant: `dist/directory-listing.md` — name, tagline, description, tags, endpoint docs.
 
 Evidence: listing URLs recorded.
+
+#### Milestone 2.5: Bot Discovery (registries)
+
+**Status:** Submission kit ready 2026-09-26; PyPI packaging DONE the same
+day (assistant). Submissions + PyPI publish in Founder's hands.
+**Date added:** 2026-09-26 — the founder asked how to reach "the other bots
+of the world." Honest answer: bots don't browse ads; they discover tools
+through registries their developers configure, machine-readable docs
+(/llms.txt — done), MCP configs (done), and training data (public repo —
+in motion). All discovery must be pull, never push: no fabricated bot
+testimonials, no injected recommendations, no misleading descriptions.
+
+Prepared by assistant:
+
+- `dist/mcp-registry-submissions.md` — the full submission kit
+- awesome-mcp-servers PR line (canonical punkpeye list, PR from Founder's account)
+- `mcp/pyproject.toml` + `mcp/LICENSE` (MIT, provisional) + `mcp/server.json`
+  — package `verify-atom-mcp` v0.1.0, console script `verify-atom-mcp`;
+  build + clean-venv install + MCP handshake verified 2026-09-26.
+  PyPI upload + `mcp-publisher publish` need the Founder's accounts.
+- Smithery / Glama / mcp.so / PulseMCP claim-and-submit steps (Founder's clicks)
+
+Evidence: PR URLs, PyPI page, registry listing URLs recorded.
 
 ### Gate G2: Distribution Gate
 
@@ -322,4 +388,13 @@ The assistant builds everything buildable. The Founder is the hands for identity
 | 2026-09-26 | `/llms.txt` domain fix confirmed live on VM | Both | public curl: Base URL = asheraistudios.duckdns.org |
 | 2026-09-26 | M1.2 MCP server test GREEN | Assistant | packet VRF-20260926-b661a532, signature valid |
 | 2026-09-26 | M1.4 live deploy deferred (paste instability); bundle-ready | Assistant | no robots.txt = allow-all default, nothing blocked |
-| 2026-09-26 | Gate G1 scored: 50% (M1.1+M1.2 complete; M1.3+M1.4 need Founder) | Assistant | this file |
+| 2026-09-26 | M1.3 repo prepared: committed, secret-scanned, zip uploaded | Assistant | awaiting Founder push to github |
+| 2026-09-26 | M1.4 deployed live: /, /robots.txt, /sitemap.xml all 200; /verify unaffected | Both | public curl verification |
+| 2026-09-26 | M1.3 complete: repo public at github.com/asherengos/verify-atom | User + Assistant | public URL verified |
+| 2026-09-26 | **Gate G1: 100% COMPLETE** — /llms.txt domain ✓, MCP real call ✓, GitHub public ✓, robots/sitemap live ✓ | — | gate closed |
+| 2026-09-26 | MARKET-2 plan + all drafts (Reddit, Show HN, directory listing) reviewed and approved by Founder; posting now in their hands | User | this file |
+| 2026-09-26 | M2.2 in flight: Reddit post live in r/vibecoding (u/Thenightmancumeth), awaiting mod approval | User | post URL TBD |
+| 2026-09-26 | M2.3 blocked: HN temporarily restricting Show HNs platform-wide; draft held for retry | Assistant | news.ycombinator.com/showhn banner |
+| 2026-09-26 | M2.2 setback: r/vibecoding post removed by Reddit + community ban; fallback plan set (GitHub-first links, pre-approval where required) | User + Assistant | reddit.com/r/vibecoding/comments/1wqt2bn/ |
+| 2026-09-26 | M2.5 added: Bot Discovery (registries) — submission kit written; honest pull-not-push strategy recorded | Assistant | dist/mcp-registry-submissions.md |
+| 2026-09-26 | M2.5 packaging DONE: verify-atom-mcp 0.1.0 (pyproject, MIT LICENSE provisional, server.json, mcp-name marker); build + clean-venv install + MCP handshake verified | Assistant | mcp/pyproject.toml, mcp/server.json |
