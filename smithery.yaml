@@ -1,0 +1,26 @@
+# Smithery configuration — https://smithery.ai/docs/config#smitheryyaml
+# verify-atom MCP server: stdio transport, zero dependencies.
+# Runs the published PyPI package (verify-atom-mcp) via uvx.
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      baseUrl:
+        type: string
+        description: "Base URL of the verification service (defaults to the public instance)"
+        default: "https://asheraistudios.duckdns.org"
+    required: []
+  commandFunction: |-
+    (config) => {
+      const env = {};
+      if (config.baseUrl) env.VRF_BASE_URL = config.baseUrl;
+      return {
+        command: 'uvx',
+        args: ['verify-atom-mcp'],
+        env: env
+      };
+    }
+  exampleConfig:
+    baseUrl: "https://asheraistudios.duckdns.org"
