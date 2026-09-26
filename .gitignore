@@ -7,6 +7,12 @@ __pycache__/
 *.pyc
 .pytest_cache/
 
+# Python packaging artifacts (rebuilt on demand; never commit).
+build/
+dist/
+*.egg-info/
+.eggs/
+
 # Belt and suspenders: no key material in the repo, ever.
 *.key
 *.pem
